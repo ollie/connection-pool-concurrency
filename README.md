@@ -57,6 +57,19 @@ See `puma.rb`.
 If you don't clear the pool, you might end up with `Sequel::DatabaseDisconnectError - PG::UnableToSend: socket not open`
 and `Timeout::Error - execution expired` errors.
 
+## Sidekiq
+
+* Concurrency option: connection limit / sidekiq workers
+
+If you are using Redis to Go Nano, then you have 10 connections limit (https://addons.heroku.com/redistogo).
+And if you are using 1 (sidekiq) worker, then your concurrency is 10.
+If 2 workers, then 5.
+
+    sidekiq -c 10 # if limit 10 and 1 worker
+    sidekiq -c 5  # if limit 10 and 2 workers
+
+Each of those jobs may use a database connection! So make sure to subtract it from the database connection limit.
+
 ## Links
 
 * Heroku article: https://devcenter.heroku.com/articles/concurrency-and-database-connections
@@ -65,6 +78,7 @@ and `Timeout::Error - execution expired` errors.
 * Sequel connection pool options: http://sequel.jeremyevans.net/rdoc/classes/Sequel/ThreadedConnectionPool.html
 * Sequel connection validator plugin: http://sequel.jeremyevans.net/rdoc-plugins/files/lib/sequel/extensions/connection_validator_rb.html
 * Puma config: https://github.com/puma/puma/blob/master/examples/config.rb
+* Sidekiq with Memcached connection pool https://github.com/mperham/sidekiq/wiki/Advanced-Options
 
 ## Code
 
