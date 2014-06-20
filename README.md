@@ -89,11 +89,13 @@ And starting up Sidekiq with:
 
 * Heroku article: https://devcenter.heroku.com/articles/concurrency-and-database-connections
 * Forking webserver: http://sequel.jeremyevans.net/rdoc/files/doc/code_order_rdoc.html
+* Sequel Talk: https://groups.google.com/forum/#!topic/sequel-talk/IrhU2V9u9sM
 * Sequel Talk: https://groups.google.com/forum/#!topic/sequel-talk/lrKLmgyOWOU
 * Sequel connection pool options: http://sequel.jeremyevans.net/rdoc/classes/Sequel/ThreadedConnectionPool.html
 * Sequel connection validator plugin: http://sequel.jeremyevans.net/rdoc-plugins/files/lib/sequel/extensions/connection_validator_rb.html
 * Puma config: https://github.com/puma/puma/blob/master/examples/config.rb
 * Sidekiq with Memcached connection pool https://github.com/mperham/sidekiq/wiki/Advanced-Options
+* Heroku buildpack: pgbouncer https://github.com/gregburek/heroku-buildpack-pgbouncer
 
 ## Code
 
