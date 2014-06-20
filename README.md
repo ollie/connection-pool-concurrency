@@ -24,6 +24,7 @@ Every worker (process) has its own pool.
 
 If you are using Postgres Hobby Basic plan, you have 20 connections limit (https://addons.heroku.com/heroku-postgresql).
 You will need to tweak your setup so that it will use at most 20 connections.
+(Sidekiq workers can use databse too, so don't forget to subtract it.)
 
     2 dynos * 2 workers * 5 thread   = 20 connections (pool is 5)
     1 dyno  * 2 workers * 10 threads = 20 connections (pool is 10)
@@ -62,13 +63,27 @@ and `Timeout::Error - execution expired` errors.
 * Concurrency option: connection limit / sidekiq workers
 
 If you are using Redis to Go Nano, then you have 10 connections limit (https://addons.heroku.com/redistogo).
-And if you are using 1 (sidekiq) worker, then your concurrency is 10.
-If 2 workers, then 5.
+And if you are using 1 (sidekiq) worker, then your `-c` option (concurrency) is 10. If 2 workers, then `-c` is 5.
 
     sidekiq -c 10 # if limit 10 and 1 worker
     sidekiq -c 5  # if limit 10 and 2 workers
 
-Each of those jobs may use a database connection! So make sure to subtract it from the database connection limit.
+If you are going to use 10 redis connections then you might be using 10 database connections
+so make sure to subtract it from the database connection limit when calculating database
+connection pool size for the web. Also don't forget to set database connection pool to
+the `-c` option (ie. 10, 5…) when Sidekiq workers load env code.
+
+You might end up doing something like this:
+
+    db = Sequel.connect(
+      'postgres://localhost/sequel_test',
+      max_connections: (ENV['DB_POOL_SIZE'] || 20).to_i
+    )
+
+And starting up Sidekiq with:
+
+    DB_POOL_SIZE=10 sidekiq -c 10
+    DB_POOL_SIZE=5 sidekiq -c 5
 
 ## Links
 
