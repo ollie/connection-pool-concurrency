@@ -46,11 +46,16 @@ Open another tab
 * Also play with `max_connections` in `app.rb`.
 * Benchmark settings are in `Rakefile`.
 
+Setting connection pool too low may cause `Sequel::PoolTimeout - Sequel::PoolTimeout` errors.
+
 ## Beware when using more workers (processes)
 
 When using multiple workers, you need to disconnect the connections from the pool
 before the process fork occurs. This is done with `on_worker_boot` in Puma.
 See `puma.rb`.
+
+If you don't clear the pool, you might end up with `Sequel::DatabaseDisconnectError - PG::UnableToSend: socket not open`
+and `Timeout::Error - execution expired` errors.
 
 ## Links
 
