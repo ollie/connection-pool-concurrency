@@ -85,6 +85,10 @@ And starting up Sidekiq with:
     DB_POOL_SIZE=10 sidekiq -c 10
     DB_POOL_SIZE=5 sidekiq -c 5
 
+## More configuration examples
+
+See [`CONFIGS.md`](CONFIGS.md) for now.
+
 ## Links
 
 * Heroku article: https://devcenter.heroku.com/articles/concurrency-and-database-connections
